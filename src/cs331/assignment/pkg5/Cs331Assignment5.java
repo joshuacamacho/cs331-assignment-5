@@ -12,6 +12,8 @@ import java.util.ArrayList;
  * @author Josh
  */
 public class Cs331Assignment5 {
+
+    
     
     public static class Node{
         String name="";
@@ -29,7 +31,8 @@ public class Cs331Assignment5 {
             predecessors = new ArrayList<Node>();
         }
     }
-
+    public static Node head;
+    public static Node tail;
     /**
      * @param args the command line arguments
      */
@@ -52,7 +55,7 @@ public class Cs331Assignment5 {
             {0,0,0,0,0,1},
             {0,0,0,0,0,0},
         };
-        
+        head = T[0];
         for(int i=0; i<6; i++){
             for(int j=0; j<6; j++){
                 if(G[i][j]==1){
@@ -61,6 +64,44 @@ public class Cs331Assignment5 {
                 }
             }
         }
+        
+        evalEf(head);
+        
+        System.out.println("hi");
     }
     
+    public static void evalEf(Node n){
+        if(n.predecessors.size()>0){
+            n.ES= findMaxPredecessors(n);
+            n.EF= n.time + n.ES;
+        }else{
+            n.ES = 0;
+            n.EF = n.time;
+        }
+        
+        for(int i=0; i<n.successors.size(); i++){
+            evalEf(n.successors.get(i));
+        }
+        
+        if(n.successors.size()==0) tail = n;
+    }
+    
+    public static void evalLf(Node n){
+        if(n.successors.size()>0){
+            //not end
+        }else{
+            //we're at the end
+            //n.EF
+        }
+    }
+    
+    private static int findMaxPredecessors(Node n) {
+        int max=0;
+        for(int i=0; i<n.predecessors.size(); i++){
+            if(max<n.predecessors.get(i).EF){
+                max=n.predecessors.get(i).EF;
+            }
+        }
+        return max;
+    }
 }
